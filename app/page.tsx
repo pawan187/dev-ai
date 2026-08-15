@@ -1,3 +1,5 @@
+import { Button } from "@/components/ui/button";
+
 export default function Home() {
   return (
     <main className="flex min-h-screen items-center justify-center bg-slate-950 px-6 text-white">
@@ -8,6 +10,7 @@ export default function Home() {
         <h1 className="text-4xl font-bold tracking-tight text-white sm:text-6xl">
           dev ai
         </h1>
+        <Button>Click me</Button>
         <p className="mt-6 max-w-xl text-lg leading-8 text-slate-300">
           A clean starting point for building AI-powered products and experiences.
         </p>

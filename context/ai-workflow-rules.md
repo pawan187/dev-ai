@@ -2,11 +2,8 @@
 
 ## Approach
 
-[Describe the overall development approach — e.g. Build
-this project incrementally using a spec-driven workflow.
-Context files define what to build, how to build it, and
-the current state of progress. Always implement against
-these specs — do not infer or invent behavior from scratch.]
+[Describe the overall development approach ]
+Build this project incrementally using a spec-driven workflow. Context files define what to build, how to build it, and the current state of progress. Always implement against these specs — do not infer or invent behavior from scratch.
 
 ## Scoping Rules
 
@@ -20,10 +17,9 @@ these specs — do not infer or invent behavior from scratch.]
 
 Split an implementation step if it combines:
 
-- [Concern one — e.g. UI changes and background task changes]
-- [Concern two — e.g. Multiple unrelated API routes]
-- [Concern three — e.g. Behavior not clearly defined in
-  the context files]
+- UI changes and background task changes
+- Multiple unrelated API routes
+- Behavior not clearly defined in the context files
 
 If a change cannot be verified end to end quickly,
 the scope is too broad — split it.
@@ -39,10 +35,17 @@ the scope is too broad — split it.
 
 ## Protected Files
 
-Do not modify the following unless explicitly instructed:
+Do not modify gemerated third-party foundation components unless explicitly instructed:
 
-- [e.g. components/ui/* — generated UI library components]
-- [e.g. Any third-party library internals]
+This includes:
+- components/ui/* — generated UI library components ( shadcn/ui )
+- Any third-party library internals
+
+these should remain default and reusable.
+Project-specific styling, layout changes, and feature logic must be implemented in app-level components instead of modifying foundation components.
+
+Only modify these files when a task explicitly requires it.
+
 
 ## Keeping Docs in Sync
 
@@ -53,6 +56,8 @@ changes:
 - Storage model decisions
 - Code conventions or standards
 - Feature scope
+
+Progress state must reflect the actual state of the implementation, not the intended state.
 
 ## Before Moving to the Next Unit
 
