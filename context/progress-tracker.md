@@ -5,14 +5,18 @@ change.
 
 ## Current Phase
 
-- Editor Base Components
+- Editor Features & Project Management
 
 ## Current Goal
 
-- Create editor navbar with sidebar toggle ✓
-- Create project sidebar with tabs and empty states ✓
-- Create dialog pattern for future use ✓
-- Verify no TypeScript errors and lint errors ✓
+- Build editor home screen with project creation UI
+- Create Create/Rename/Delete project dialogs
+- Add sidebar project items with actions (rename/delete)
+- Implement useProjectDialogs hook for state management
+- Wire all interactions with mock data
+- Mobile: add sidebar backdrop and closing behavior
+- Test all dialogs and interactions
+- Verify no TypeScript or lint errors
 
 ## Completed
 
@@ -28,13 +32,50 @@ change.
 - ✓ Created components/editor/dialog-pattern.tsx for reusable dialogs
 - ✓ Verified all new components compile without TypeScript errors
 - ✓ Verified no lint errors in new components
+- ✓ Created proxy.ts with clerkMiddleware() for route protection
+- ✓ Created sign-in and sign-up pages using Clerk components
+- ✓ Wrapped root layout with ClerkProvider
+- ✓ Updated app/page.tsx to redirect based on auth status
+- ✓ Added UserButton to editor navbar
+- ✓ Created app/editor/page.tsx with navbar and sidebar
+- ✓ Updated .env.local with Clerk redirect URLs
+- ✓ Verified build passes with no TypeScript or compilation errors
+- ✓ Redesigned sign-in and sign-up pages with 50/50 two-panel layout
+- ✓ Left panel: Clerk forms with light surface color (#111827)
+- ✓ Right panel: Dark background with testimonial and feature messaging
+- ✓ Applied Geist Sans font throughout (from UI guidelines)
+- ✓ Used CSS custom property color values from dark theme palette
 
 ## In Progress
 
 - None
 
+---
+
+### Project Dialogs Implementation Complete
+- ✓ Created useProjectDialogs hook for managing dialog/form/loading state
+- ✓ Slug generation from project name (live preview)
+- ✓ Created Create Project dialog with name input and slug preview
+- ✓ Created Rename Project dialog with prefilled name and auto-focus
+- ✓ Created Delete Project dialog with destructive confirmation
+- ✓ Updated editor home page with centered content and New Project button
+- ✓ Updated sidebar with mock project data (3 projects: 2 owned, 1 shared)
+- ✓ Added sidebar project actions (rename/delete) visible on hover for owned projects
+- ✓ Sidebar actions now show as direct icons (pencil + trash) instead of 3-dot menu
+- ✓ Mobile: backdrop scrim already in place
+- ✓ All dialogs wired to editor page
+- ✓ Build passes with no TypeScript or compilation errors
+- ✓ No lint errors
+
+### Bug Fixes Applied
+- ✓ Fixed title positioning - added pt-20 to main element to prevent overlap with navbar
+- ✓ Updated dialog button styling to dark theme (blue for primary, red for destructive, slate for secondary)
+- ✓ Replaced 3-dot menu with direct icon buttons (rename/delete) shown on hover next to project name
+
 ## Next Up
 
+- Test Clerk form styling and interactions
+- Refine Clerk component appearance customization
 - Build feature-specific editor components (canvas, toolbar, etc.)
 - Create page layouts for different editor features
 - Implement project creation dialog

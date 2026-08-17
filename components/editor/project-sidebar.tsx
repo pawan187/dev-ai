@@ -1,16 +1,101 @@
 "use client";
 
-import { X, Plus } from "lucide-react";
+import { useState } from "react";
+import { X, Plus, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Project } from "@/hooks/useProjectDialogs";
 
 interface ProjectSidebarProps {
   isOpen: boolean;
   onClose: () => void;
+  onNewProject: () => void;
+  onRenameProject: (project: Project) => void;
+  onDeleteProject: (project: Project) => void;
 }
 
-export function ProjectSidebar({ isOpen, onClose }: ProjectSidebarProps) {
+// Mock project data
+const MOCK_PROJECTS: Project[] = [
+  {
+    id: "1",
+    name: "AI Chat System",
+    slug: "ai-chat-system",
+    owned: true,
+  },
+  {
+    id: "2",
+    name: "Analytics Dashboard",
+    slug: "analytics-dashboard",
+    owned: true,
+  },
+  {
+    id: "3",
+    name: "E-commerce Platform",
+    slug: "ecommerce-platform",
+    owned: false,
+  },
+];
+
+export function ProjectSidebar({
+  isOpen,
+  onClose,
+  onNewProject,
+  onRenameProject,
+  onDeleteProject,
+}: ProjectSidebarProps) {
+  const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
+
+  const myProjects = MOCK_PROJECTS.filter((p) => p.owned);
+  const sharedProjects = MOCK_PROJECTS.filter((p) => !p.owned);
+
+  const handleRename = (project: Project, e: React.MouseEvent) => {
+    e.stopPropagation();
+    onRenameProject(project);
+  };
+
+  const handleDelete = (project: Project, e: React.MouseEvent) => {
+    e.stopPropagation();
+    onDeleteProject(project);
+  };
+
+  const ProjectItem = ({ project }: { project: Project }) => (
+    <div
+      key={project.id}
+      className="relative"
+      onMouseEnter={() => setHoveredProjectId(project.id)}
+      onMouseLeave={() => setHoveredProjectId(null)}
+    >
+      <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-slate-800 transition-colors group cursor-pointer">
+        <span className="text-sm text-slate-300 truncate flex-1">{project.name}</span>
+
+        {/* Action Icons (shown on hover for owned projects) */}
+        {project.owned && hoveredProjectId === project.id && (
+          <div className="flex items-center gap-1 ml-2">
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 text-slate-400 hover:text-slate-200 hover:bg-slate-700"
+              onClick={(e) => handleRename(project, e)}
+              title="Rename"
+            >
+              <Pencil className="h-4 w-4" />
+            </Button>
+            <Button
+              variant="ghost"
+              size="icon"
+              className="h-6 w-6 text-slate-400 hover:text-red-400 hover:bg-slate-700"
+              onClick={(e) => handleDelete(project, e)}
+              title="Delete"
+            >
+              <Trash2 className="h-4 w-4" />
+            </Button>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+
   return (
     <>
       {/* Backdrop */}
@@ -51,37 +136,49 @@ export function ProjectSidebar({ isOpen, onClose }: ProjectSidebarProps) {
 
             {/* My Projects Tab */}
             <TabsContent value="my-projects" className="mt-4">
-              <div className="flex items-center justify-center py-12 text-center">
-                <div>
-                  <p className="text-sm text-slate-400">
-                    No projects yet
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Create your first project to get started
-                  </p>
+              {myProjects.length > 0 ? (
+                <div className="space-y-2">
+                  {myProjects.map((project) => (
+                    <ProjectItem key={project.id} project={project} />
+                  ))}
                 </div>
-              </div>
+              ) : (
+                <div className="flex items-center justify-center py-12 text-center">
+                  <div>
+                    <p className="text-sm text-slate-400">No projects yet</p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Create your first project to get started
+                    </p>
+                  </div>
+                </div>
+              )}
             </TabsContent>
 
             {/* Shared Tab */}
             <TabsContent value="shared" className="mt-4">
-              <div className="flex items-center justify-center py-12 text-center">
-                <div>
-                  <p className="text-sm text-slate-400">
-                    No shared projects
-                  </p>
-                  <p className="text-xs text-slate-500 mt-1">
-                    Projects shared with you will appear here
-                  </p>
+              {sharedProjects.length > 0 ? (
+                <div className="space-y-2">
+                  {sharedProjects.map((project) => (
+                    <ProjectItem key={project.id} project={project} />
+                  ))}
                 </div>
-              </div>
+              ) : (
+                <div className="flex items-center justify-center py-12 text-center">
+                  <div>
+                    <p className="text-sm text-slate-400">No shared projects</p>
+                    <p className="text-xs text-slate-500 mt-1">
+                      Projects shared with you will appear here
+                    </p>
+                  </div>
+                </div>
+              )}
             </TabsContent>
           </Tabs>
         </ScrollArea>
 
         {/* New Project Button */}
         <div className="px-4 py-4 border-t border-slate-800">
-          <Button className="w-full" variant="default">
+          <Button className="w-full" variant="default" onClick={onNewProject}>
             <Plus className="h-4 w-4 mr-2" />
             New Project
           </Button>
