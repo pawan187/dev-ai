@@ -5,6 +5,7 @@ import { Bot, PanelRightClose } from "lucide-react";
 import { EditorNavbar } from "@/components/editor/editor-navbar";
 import { ProjectSidebar } from "@/components/editor/project-sidebar";
 import { ShareDialog } from "@/components/editor/share-dialog";
+import { Canvas } from "@/components/editor/canvas";
 import { Button } from "@/components/ui/button";
 import type { Project } from "@/hooks/useProjectActions";
 
@@ -49,13 +50,8 @@ export function WorkspaceShell({
           showBackdrop={false}
         />
 
-        <main className={`relative flex min-w-0 flex-1 items-center justify-center bg-slate-950 transition-[margin] ${isProjectSidebarOpen ? "ml-64" : "ml-0"}`}>
-          <div className="text-center">
-            <h1 className="text-lg font-semibold text-slate-100">Canvas coming soon</h1>
-            <p className="mt-2 text-sm text-slate-400">
-              Your system design workspace will appear here.
-            </p>
-          </div>
+        <main className={`relative min-w-0 flex-1 bg-slate-950 transition-[margin] ${isProjectSidebarOpen ? "ml-64" : "ml-0"}`}>
+          <Canvas roomId={projectId} />
         </main>
 
         {isAiSidebarOpen && (

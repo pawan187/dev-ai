@@ -150,9 +150,41 @@ change.
 - ✓ Rename updates correctly and refreshes page
 - ✓ Delete redirects or refreshes correctly
 
+### Liveblocks Setup Complete (Feature Spec 10)
+- ✓ Typed Liveblocks presence with cursor position and AI thinking state
+- ✓ Typed Liveblocks user metadata with Clerk ID, display name, avatar URL, and cursor color
+- ✓ Created a cached server-side Liveblocks client in `lib/liveblocks.ts`
+- ✓ Added deterministic user-ID-to-cursor-color mapping from a fixed palette
+- ✓ Created `POST /api/liveblocks-auth` with Clerk authentication and project access verification
+- ✓ Uses the project ID as the Liveblocks room ID and creates private rooms only when absent
+- ✓ Issues authorized per-project Liveblocks session tokens with name, avatar, and cursor color metadata
+- ✓ Returns 403 for authenticated users without project access
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
+### Base Collaborative Canvas Complete (Feature Spec 11)
+- ✓ Replaced the workspace canvas placeholder with a client-side collaborative canvas wrapper
+- ✓ Configured LiveblocksProvider with `/api/liveblocks-auth` and RoomProvider with the current project room ID
+- ✓ Added initial Liveblocks presence with a null cursor and non-thinking state
+- ✓ Added client suspense loading and Liveblocks connection-error fallback states
+- ✓ Connected React Flow nodes, edges, and change handlers to `useLiveblocksFlow` with suspense and empty initial graph state
+- ✓ Added shared `CanvasNode` and `CanvasEdge` types plus label, color, and shape node data in `types/canvas.ts`
+- ✓ Rendered React Flow with loose connections, fit view, a minimap, and dot-pattern background
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
+### Shape Panel Complete (Feature Spec 12)
+- ✓ Added a floating, bottom-center shape toolbar to the collaborative canvas
+- ✓ Added draggable rectangle, diamond, circle, pill, cylinder, and hexagon shape buttons
+- ✓ Added validated drag payloads containing each shape name and its default width and height
+- ✓ Added canvas drag-over and drop handling with screen-to-canvas coordinate conversion
+- ✓ Dropping a shape creates a Liveblocks-synced `canvasNode` with an empty label, neutral color, dragged shape, and shape/timestamp/counter-based ID
+- ✓ Added a basic bordered custom node renderer for all canvas node shapes
+- ✓ Expanded the shared canvas shape types and drag-payload validation in `types/canvas.ts`
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
 ## Next Up
 
-- Test API integration with browser network tools
+- Add `LIVEBLOCKS_SECRET_KEY` to the deployment environment before testing realtime sessions
+- Test the Liveblocks authentication endpoint and collaborative canvas connection
 - Add toast notifications for success/error feedback
 - Add loading states and error handling in UI
 - Test full user flow: create → rename → delete projects
