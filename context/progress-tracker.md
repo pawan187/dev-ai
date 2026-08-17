@@ -5,18 +5,14 @@ change.
 
 ## Current Phase
 
-- Editor Features & Project Management
+- Backend API Development
 
 ## Current Goal
 
-- Build editor home screen with project creation UI
-- Create Create/Rename/Delete project dialogs
-- Add sidebar project items with actions (rename/delete)
-- Implement useProjectDialogs hook for state management
-- Wire all interactions with mock data
-- Mobile: add sidebar backdrop and closing behavior
-- Test all dialogs and interactions
-- Verify no TypeScript or lint errors
+- Implement project management API routes
+- Build database query and mutation handlers
+- Ensure authentication and authorization
+- Wire UI components to API endpoints
 
 ## Completed
 
@@ -84,13 +80,62 @@ change.
 - ✓ Generated Prisma Client to node_modules/@prisma/client
 - ✓ npm run build passed with no TypeScript or compilation errors
 
+### Project API Routes Implementation Complete
+- ✓ Created app/api/projects/route.ts with GET and POST handlers
+- ✓ GET /api/projects: List current user's projects (authenticated only)
+- ✓ POST /api/projects: Create project with default name "Untitled Project"
+- ✓ Installed @prisma/adapter-pg and pg for PostgreSQL driver support
+- ✓ Updated lib/prisma.ts to use PrismaPg adapter for database connections
+- ✓ Created app/api/projects/[projectId]/route.ts with PATCH and DELETE handlers
+- ✓ PATCH /api/projects/[projectId]: Rename project (owner only, returns 403 for non-owners)
+- ✓ DELETE /api/projects/[projectId]: Delete project (owner only, returns 403 for non-owners)
+- ✓ All endpoints return 401 for unauthenticated requests
+- ✓ All endpoints verify Clerk authentication using auth() from @clerk/nextjs
+- ✓ All endpoints verify project ownership before mutations
+- ✓ npm run build passes with no TypeScript or compilation errors
+- ✓ Routes correctly registered: GET/POST /api/projects and PATCH/DELETE /api/projects/[projectId]
+
+### Wire Editor Home to Real API Complete (Feature Spec 07)
+- ✓ Created lib/project-helpers.ts with getProjectsForUser() server-side data fetcher
+- ✓ Fetches owned projects from Prisma for current Clerk user
+- ✓ Fetches shared projects via ProjectCollaborator model
+- ✓ Generates slugs for all projects server-side
+- ✓ Created hooks/useProjectActions.ts with real API integration
+- ✓ POST /api/projects: Create project with real API call
+- ✓ Generates unique room ID suffix for each project
+- ✓ Navigates to /editor/[projectId] on successful creation
+- ✓ PATCH /api/projects/[id]: Rename project with real API call
+- ✓ Refreshes page on successful rename
+- ✓ DELETE /api/projects/[id]: Delete project with real API call
+- ✓ Redirects to /editor on successful deletion
+- ✓ Converted app/editor/page.tsx to server component
+- ✓ Server component fetches projects using getProjectsForUser()
+- ✓ Created components/editor/editor-page-client.tsx wrapper
+- ✓ Client component manages sidebar state and dialogs
+- ✓ Client component receives owned/shared projects as props
+- ✓ Updated components/editor/project-sidebar.tsx
+- ✓ Removed mock project data
+- ✓ Accepts real ownedProjects and sharedProjects from props
+- ✓ Changed onClose to onToggleSidebar callback pattern
+- ✓ Shows "My projects" and "Shared" tabs with real data
+- ✓ Projects display properly with rename/delete actions for owned
+- ✓ Sidebar correctly filters and displays projects
+- ✓ Create dialog shows room ID preview (slug generation)
+- ✓ Rename dialog pre-fills current project name
+- ✓ Delete dialog shows project name for confirmation
+- ✓ All API calls include proper error handling
+- ✓ Sidebar uses real project data from server
+- ✓ Create navigates to new workspace (/editor/[projectId])
+- ✓ Rename updates correctly and refreshes page
+- ✓ Delete redirects or refreshes correctly
+
 ## Next Up
 
-- Test Clerk form styling and interactions
-- Refine Clerk component appearance customization
-- Build feature-specific editor components (canvas, toolbar, etc.)
-- Create page layouts for different editor features
-- Implement project creation dialog with database integration
+- Test API integration with browser network tools
+- Add toast notifications for success/error feedback
+- Implement project navigation to workspace pages
+- Add loading states and error handling in UI
+- Test full user flow: create → rename → delete projects
 
 ## Open Questions
 

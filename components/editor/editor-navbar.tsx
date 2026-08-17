@@ -5,11 +5,11 @@ import { UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
 interface EditorNavbarProps {
-  isOpen: boolean;
-  onToggleSidebar: () => void;
+  isOpen?: boolean;
+  onToggleSidebar?: () => void;
 }
 
-export function EditorNavbar({ isOpen, onToggleSidebar }: EditorNavbarProps) {
+export function EditorNavbar({ isOpen = false, onToggleSidebar }: EditorNavbarProps) {
   return (
     <nav className="fixed top-0 left-0 right-0 h-16 bg-slate-950 border-b border-slate-800 flex items-center px-4 z-50">
       {/* Left Section */}

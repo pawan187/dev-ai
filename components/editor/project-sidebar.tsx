@@ -1,53 +1,30 @@
 "use client";
 
 import { useState } from "react";
-import { X, Plus, Pencil, Trash2 } from "lucide-react";
+import { X, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Project } from "@/hooks/useProjectDialogs";
+import { Project } from "@/hooks/useProjectActions";
 
 interface ProjectSidebarProps {
   isOpen: boolean;
-  onClose: () => void;
-  onNewProject: () => void;
+  onToggleSidebar: (isOpen: boolean) => void;
+  ownedProjects: Project[];
+  sharedProjects: Project[];
   onRenameProject: (project: Project) => void;
   onDeleteProject: (project: Project) => void;
 }
 
-// Mock project data
-const MOCK_PROJECTS: Project[] = [
-  {
-    id: "1",
-    name: "AI Chat System",
-    slug: "ai-chat-system",
-    owned: true,
-  },
-  {
-    id: "2",
-    name: "Analytics Dashboard",
-    slug: "analytics-dashboard",
-    owned: true,
-  },
-  {
-    id: "3",
-    name: "E-commerce Platform",
-    slug: "ecommerce-platform",
-    owned: false,
-  },
-];
-
 export function ProjectSidebar({
   isOpen,
-  onClose,
-  onNewProject,
+  onToggleSidebar,
+  ownedProjects,
+  sharedProjects,
   onRenameProject,
   onDeleteProject,
 }: ProjectSidebarProps) {
   const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
-
-  const myProjects = MOCK_PROJECTS.filter((p) => p.owned);
-  const sharedProjects = MOCK_PROJECTS.filter((p) => !p.owned);
 
   const handleRename = (project: Project, e: React.MouseEvent) => {
     e.stopPropagation();
@@ -102,7 +79,7 @@ export function ProjectSidebar({
       {isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 transition-opacity"
-          onClick={onClose}
+          onClick={() => onToggleSidebar(false)}
         />
       )}
 
@@ -118,7 +95,7 @@ export function ProjectSidebar({
           <Button
             variant="ghost"
             size="icon"
-            onClick={onClose}
+            onClick={() => onToggleSidebar(false)}
             className="h-8 w-8"
             aria-label="Close sidebar"
           >
@@ -136,9 +113,9 @@ export function ProjectSidebar({
 
             {/* My Projects Tab */}
             <TabsContent value="my-projects" className="mt-4">
-              {myProjects.length > 0 ? (
+              {ownedProjects.length > 0 ? (
                 <div className="space-y-2">
-                  {myProjects.map((project) => (
+                  {ownedProjects.map((project) => (
                     <ProjectItem key={project.id} project={project} />
                   ))}
                 </div>
@@ -175,14 +152,6 @@ export function ProjectSidebar({
             </TabsContent>
           </Tabs>
         </ScrollArea>
-
-        {/* New Project Button */}
-        <div className="px-4 py-4 border-t border-slate-800">
-          <Button className="w-full" variant="default" onClick={onNewProject}>
-            <Plus className="h-4 w-4 mr-2" />
-            New Project
-          </Button>
-        </div>
       </aside>
     </>
   );
