@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { X, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -12,8 +13,11 @@ interface ProjectSidebarProps {
   onToggleSidebar: (isOpen: boolean) => void;
   ownedProjects: Project[];
   sharedProjects: Project[];
-  onRenameProject: (project: Project) => void;
-  onDeleteProject: (project: Project) => void;
+  onRenameProject?: (project: Project) => void;
+  onDeleteProject?: (project: Project) => void;
+  currentProjectId?: string;
+  showBackdrop?: boolean;
+  defaultTab?: "my-projects" | "shared";
 }
 
 export function ProjectSidebar({
@@ -23,17 +27,20 @@ export function ProjectSidebar({
   sharedProjects,
   onRenameProject,
   onDeleteProject,
+  currentProjectId,
+  showBackdrop = true,
+  defaultTab = "my-projects",
 }: ProjectSidebarProps) {
   const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
 
   const handleRename = (project: Project, e: React.MouseEvent) => {
     e.stopPropagation();
-    onRenameProject(project);
+    onRenameProject?.(project);
   };
 
   const handleDelete = (project: Project, e: React.MouseEvent) => {
     e.stopPropagation();
-    onDeleteProject(project);
+    onDeleteProject?.(project);
   };
 
   const ProjectItem = ({ project }: { project: Project }) => (
@@ -43,11 +50,13 @@ export function ProjectSidebar({
       onMouseEnter={() => setHoveredProjectId(project.id)}
       onMouseLeave={() => setHoveredProjectId(null)}
     >
-      <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-slate-800 transition-colors group cursor-pointer">
+      <div className={`flex items-center justify-between rounded-md px-3 py-2 transition-colors group ${project.id === currentProjectId ? "bg-slate-800" : "hover:bg-slate-800"}`}>
+        <Link href={`/editor/${project.id}`} className="min-w-0 flex-1" onClick={() => onToggleSidebar(false)}>
         <span className="text-sm text-slate-300 truncate flex-1">{project.name}</span>
+        </Link>
 
         {/* Action Icons (shown on hover for owned projects) */}
-        {project.owned && hoveredProjectId === project.id && (
+        {project.owned && hoveredProjectId === project.id && onRenameProject && onDeleteProject && (
           <div className="flex items-center gap-1 ml-2">
             <Button
               variant="ghost"
@@ -76,7 +85,7 @@ export function ProjectSidebar({
   return (
     <>
       {/* Backdrop */}
-      {isOpen && (
+      {showBackdrop && isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 transition-opacity"
           onClick={() => onToggleSidebar(false)}
@@ -105,7 +114,7 @@ export function ProjectSidebar({
 
         {/* Tabs */}
         <ScrollArea className="flex-1 px-4 py-4">
-          <Tabs defaultValue="my-projects" className="w-full">
+          <Tabs defaultValue={defaultTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="my-projects">My projects</TabsTrigger>
               <TabsTrigger value="shared">Shared</TabsTrigger>

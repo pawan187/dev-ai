@@ -95,6 +95,27 @@ change.
 - ✓ npm run build passes with no TypeScript or compilation errors
 - ✓ Routes correctly registered: GET/POST /api/projects and PATCH/DELETE /api/projects/[projectId]
 
+### Editor Workspace Shell Complete (Feature Spec 08)
+- ✓ Created `lib/project-access.ts` with Clerk identity and project membership helpers
+- ✓ Created server-rendered `/editor/[roomId]` page with sign-in redirect and project access checks
+- ✓ Added `AccessDenied` state for missing or unauthorized projects
+- ✓ Added a full-viewport workspace shell with project navbar context, project sidebar, canvas placeholder, and AI sidebar placeholder
+- ✓ Added project navigation and current-project highlighting to the existing sidebar
+- ✓ Filtered shared project lists by the signed-in user's primary email
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+- ✓ Included the project owner in the Share dialog access list with their Clerk profile data
+- ✓ Refined sidebar controls: open icons appear only while their sidebar is closed, with close actions contained in each sidebar
+- ✓ Moved Share and AI chat controls to the navbar's right side and increased the project title prominence
+
+### Share Dialog Complete (Feature Spec 09)
+- ✓ Added a Share dialog opened from the workspace navbar
+- ✓ Owners can invite and remove project collaborators by email
+- ✓ Collaborators have view-only access to the collaborator list
+- ✓ Added project collaborator list, invite, and removal API endpoints with server-side owner enforcement for mutations
+- ✓ Enriched collaborator emails with Clerk display names and avatars, with email-only fallback
+- ✓ Added project-link copying with temporary `Copies!` feedback
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
 ### Wire Editor Home to Real API Complete (Feature Spec 07)
 - ✓ Created lib/project-helpers.ts with getProjectsForUser() server-side data fetcher
 - ✓ Fetches owned projects from Prisma for current Clerk user
@@ -133,7 +154,6 @@ change.
 
 - Test API integration with browser network tools
 - Add toast notifications for success/error feedback
-- Implement project navigation to workspace pages
 - Add loading states and error handling in UI
 - Test full user flow: create → rename → delete projects
 
