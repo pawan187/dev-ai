@@ -5,18 +5,18 @@ change.
 
 ## Current Phase
 
-- Authentication & UI Polish
+- Editor Features & Project Management
 
 ## Current Goal
 
-- Implement Clerk authentication ✓
-- Create sign-in and sign-up pages ✓
-- Set up proxy-based route protection ✓
-- Add UserButton to editor navbar ✓
-- Create editor page ✓
-- Verify build passes ✓
-- Update auth pages with professional two-panel layout ✓
-- Apply UI guidelines and fonts ✓
+- Build editor home screen with project creation UI
+- Create Create/Rename/Delete project dialogs
+- Add sidebar project items with actions (rename/delete)
+- Implement useProjectDialogs hook for state management
+- Wire all interactions with mock data
+- Mobile: add sidebar backdrop and closing behavior
+- Test all dialogs and interactions
+- Verify no TypeScript or lint errors
 
 ## Completed
 
@@ -49,6 +49,28 @@ change.
 ## In Progress
 
 - None
+
+---
+
+### Project Dialogs Implementation Complete
+- ✓ Created useProjectDialogs hook for managing dialog/form/loading state
+- ✓ Slug generation from project name (live preview)
+- ✓ Created Create Project dialog with name input and slug preview
+- ✓ Created Rename Project dialog with prefilled name and auto-focus
+- ✓ Created Delete Project dialog with destructive confirmation
+- ✓ Updated editor home page with centered content and New Project button
+- ✓ Updated sidebar with mock project data (3 projects: 2 owned, 1 shared)
+- ✓ Added sidebar project actions (rename/delete) visible on hover for owned projects
+- ✓ Sidebar actions now show as direct icons (pencil + trash) instead of 3-dot menu
+- ✓ Mobile: backdrop scrim already in place
+- ✓ All dialogs wired to editor page
+- ✓ Build passes with no TypeScript or compilation errors
+- ✓ No lint errors
+
+### Bug Fixes Applied
+- ✓ Fixed title positioning - added pt-20 to main element to prevent overlap with navbar
+- ✓ Updated dialog button styling to dark theme (blue for primary, red for destructive, slate for secondary)
+- ✓ Replaced 3-dot menu with direct icon buttons (rename/delete) shown on hover next to project name
 
 ## Next Up
 
