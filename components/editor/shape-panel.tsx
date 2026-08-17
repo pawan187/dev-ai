@@ -30,9 +30,11 @@ const SHAPES: ShapeDefinition[] = [
 
 interface ShapeButtonProps {
   shape: ShapeDefinition;
+  onShapeDragStart: (payload: CanvasShapeDragPayload, event: React.DragEvent<HTMLButtonElement>) => void;
+  onShapeDragEnd: () => void;
 }
 
-function ShapeButton({ shape }: ShapeButtonProps) {
+function ShapeButton({ shape, onShapeDragStart, onShapeDragEnd }: ShapeButtonProps) {
   const Icon = shape.icon;
 
   function handleDragStart(event: React.DragEvent<HTMLButtonElement>) {
@@ -44,6 +46,7 @@ function ShapeButton({ shape }: ShapeButtonProps) {
 
     event.dataTransfer.effectAllowed = "move";
     event.dataTransfer.setData(CANVAS_SHAPE_DRAG_TYPE, JSON.stringify(payload));
+    onShapeDragStart(payload, event);
   }
 
   return (
@@ -51,6 +54,7 @@ function ShapeButton({ shape }: ShapeButtonProps) {
       type="button"
       draggable
       onDragStart={handleDragStart}
+      onDragEnd={onShapeDragEnd}
       className="flex h-10 w-10 cursor-grab items-center justify-center rounded-xl text-slate-300 transition-colors hover:bg-slate-700 hover:text-white active:cursor-grabbing"
       aria-label={`Drag ${shape.label} onto canvas`}
       title={shape.label}
@@ -60,14 +64,24 @@ function ShapeButton({ shape }: ShapeButtonProps) {
   );
 }
 
-export function ShapePanel() {
+interface ShapePanelProps {
+  onShapeDragStart: (payload: CanvasShapeDragPayload, event: React.DragEvent<HTMLButtonElement>) => void;
+  onShapeDragEnd: () => void;
+}
+
+export function ShapePanel({ onShapeDragStart, onShapeDragEnd }: ShapePanelProps) {
   return (
     <Panel
       position="bottom-center"
       className="mb-5 flex items-center gap-1 rounded-2xl border border-slate-700 bg-slate-900/95 p-2 shadow-lg"
     >
       {SHAPES.map((shape) => (
-        <ShapeButton key={shape.shape} shape={shape} />
+        <ShapeButton
+          key={shape.shape}
+          shape={shape}
+          onShapeDragStart={onShapeDragStart}
+          onShapeDragEnd={onShapeDragEnd}
+        />
       ))}
     </Panel>
   );

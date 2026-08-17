@@ -137,3 +137,7 @@ body {
     @apply font-sans;
   }
 }
+
+.react-flow__node:hover .canvas-node-handle {
+  opacity: 1 !important;
+}

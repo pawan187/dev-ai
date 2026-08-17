@@ -12,6 +12,7 @@ export const NODE_COLORS = {
 } as const;
 
 export type CanvasNodeColor = keyof typeof NODE_COLORS;
+export const CANVAS_NODE_COLORS = Object.keys(NODE_COLORS) as CanvasNodeColor[];
 export const CANVAS_NODE_SHAPES = [
   "rectangle",
   "diamond",
@@ -53,4 +54,9 @@ export interface CanvasNodeData extends Record<string, unknown> {
 }
 
 export type CanvasNode = Node<CanvasNodeData, "canvasNode">;
-export type CanvasEdge = Edge<Record<string, never>, "canvasEdge">;
+
+export interface CanvasEdgeData extends Record<string, unknown> {
+  label: string;
+}
+
+export type CanvasEdge = Edge<CanvasEdgeData, "canvasEdge">;

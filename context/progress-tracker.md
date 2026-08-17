@@ -181,6 +181,53 @@ change.
 - ✓ Expanded the shared canvas shape types and drag-payload validation in `types/canvas.ts`
 - ✓ Verified `npm run build` passes with no TypeScript or compilation errors
 
+### Node Shape Rendering Complete (Feature Spec 13)
+- ✓ Replaced the placeholder canvas node with CSS rectangle, pill, and circle variants
+- ✓ Added scalable SVG rendering for diamond, hexagon, and cylinder node variants
+- ✓ Added subtle resting borders and brighter selected-node borders across all shapes
+- ✓ Added a local ghost preview that follows the cursor while a toolbar shape is dragged
+- ✓ Preview uses the same dragged shape and default dimensions, then clears after drop or cancellation
+- ✓ Kept all node rendering and drop creation connected to the existing Liveblocks-synced canvas state
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
+### Canvas Interaction Fixes
+- ✓ Fixed the shape ghost preview to retain its drag payload from drag start and update its position during canvas drag-over events
+- ✓ Added source and target handles to custom canvas nodes so the existing Liveblocks-synced React Flow connection handler can create links between nodes
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
+### Canvas Connection Port Fix
+- ✓ Assigned unique top, right, bottom, and left handle IDs to every custom canvas node
+- ✓ Used loose-mode source handles on each side so links can begin from any node side
+- ✓ Confirmed drag preview remains limited to an active shape drag and clears on drop or cancellation
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
+### Node Selection Visual Refinement
+- ✓ Hid node outlines and connection points until their node is selected
+- ✓ Kept all four handles mounted but non-interactive while hidden so link anchors remain stable
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
+### Node Editing Complete (Feature Spec 14)
+- ✓ Added subtle resize handles for selected canvas nodes with enforced 80×50 minimum dimensions
+- ✓ Kept resize updates connected to the existing Liveblocks-synced React Flow node change handler
+- ✓ Added centered inline label editing on node-label double-click, including an empty-label placeholder
+- ✓ Added a centered textarea overlay with live collaborative updates on every keystroke
+- ✓ Closes label editing on blur or Escape without layout shifts
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
+### Edge Resize Control Fix
+- ✓ Raised React Flow edge and corner resize controls above the node shape surface
+- ✓ Selected nodes can now be resized from all four edges as well as all four corners
+- ✓ Verified `npm run build` passes with no TypeScript or compilation errors
+
+### Edge Behavior Complete (Feature Spec 16)
+- Completed: Added four subtle, white, dark-bordered connection handles to every custom node.
+- Completed: Handles fade in on node hover and support loose-mode connections from any side.
+- Completed: Added custom edge defaults with a light rounded stroke, arrowhead, and wider invisible interaction area.
+- Completed: Created the `canvasEdge` renderer with right-angle smooth-step routing and brighter hover/selected states.
+- Completed: Added double-click inline edge-label editing at the `getSmoothStepPath` midpoint via `EdgeLabelRenderer`.
+- Completed: Edge labels resize with their text and persist through the Liveblocks-synced edge state.
+- Completed: Verified `npm run build` passes with no TypeScript or compilation errors.
+
 ## Next Up
 
 - Add `LIVEBLOCKS_SECRET_KEY` to the deployment environment before testing realtime sessions
