@@ -1,39 +1,68 @@
 "use client";
 
-import { PanelLeftOpen, PanelLeftClose } from "lucide-react";
+import { Bot, PanelLeftOpen, Share2 } from "lucide-react";
 import { UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
 interface EditorNavbarProps {
-  isOpen: boolean;
-  onToggleSidebar: () => void;
+  isOpen?: boolean;
+  onToggleSidebar?: () => void;
+  projectName?: string;
+  isAiSidebarOpen?: boolean;
+  onToggleAiSidebar?: () => void;
+  onShare?: () => void;
 }
 
-export function EditorNavbar({ isOpen, onToggleSidebar }: EditorNavbarProps) {
+export function EditorNavbar({
+  isOpen = false,
+  onToggleSidebar,
+  projectName,
+  isAiSidebarOpen = false,
+  onToggleAiSidebar,
+  onShare,
+}: EditorNavbarProps) {
   return (
     <nav className="fixed top-0 left-0 right-0 h-16 bg-slate-950 border-b border-slate-800 flex items-center px-4 z-50">
-      {/* Left Section */}
-      <div className="flex-shrink-0">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={onToggleSidebar}
-          className="h-8 w-8"
-          aria-label="Toggle sidebar"
-        >
-          {isOpen ? (
-            <PanelLeftClose className="h-5 w-5" />
-          ) : (
+      <div className="flex min-w-0 flex-1 items-center gap-2">
+        {!isOpen && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onToggleSidebar}
+            className="h-8 w-8 shrink-0"
+            aria-label="Open projects sidebar"
+          >
             <PanelLeftOpen className="h-5 w-5" />
-          )}
+          </Button>
+        )}
+        <Button variant="ghost" size="icon" onClick={() => window.location.href = "/"} className="h-8 w-8 shrink-0" aria-label="Go to home page">
+            Home
         </Button>
+
+        {projectName && (
+          <span className="max-w-96 truncate text-xl font-semibold tracking-tight text-slate-100">
+            {projectName}
+          </span>
+        )}
       </div>
 
-      {/* Center Section */}
-      <div className="flex-1" />
-
-      {/* Right Section */}
-      <div className="flex-shrink-0">
+      <div className="flex flex-shrink-0 items-center gap-1">
+        {projectName && (
+          <Button variant="ghost" size="sm" className="gap-2" aria-label="Share project" onClick={onShare}>
+            <Share2 className="h-4 w-4" />
+            Share
+          </Button>
+        )}
+        {projectName && !isAiSidebarOpen && (
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={onToggleAiSidebar}
+            aria-label="Open AI chat sidebar"
+          >
+            <Bot className="h-5 w-5" />
+          </Button>
+        )}
         <UserButton />
       </div>
     </nav>

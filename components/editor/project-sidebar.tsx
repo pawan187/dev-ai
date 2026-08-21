@@ -1,62 +1,46 @@
 "use client";
 
 import { useState } from "react";
-import { X, Plus, Pencil, Trash2 } from "lucide-react";
+import Link from "next/link";
+import { X, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Project } from "@/hooks/useProjectDialogs";
+import { Project } from "@/hooks/useProjectActions";
 
 interface ProjectSidebarProps {
   isOpen: boolean;
-  onClose: () => void;
-  onNewProject: () => void;
-  onRenameProject: (project: Project) => void;
-  onDeleteProject: (project: Project) => void;
+  onToggleSidebar: (isOpen: boolean) => void;
+  ownedProjects: Project[];
+  sharedProjects: Project[];
+  onRenameProject?: (project: Project) => void;
+  onDeleteProject?: (project: Project) => void;
+  currentProjectId?: string;
+  showBackdrop?: boolean;
+  defaultTab?: "my-projects" | "shared";
 }
-
-// Mock project data
-const MOCK_PROJECTS: Project[] = [
-  {
-    id: "1",
-    name: "AI Chat System",
-    slug: "ai-chat-system",
-    owned: true,
-  },
-  {
-    id: "2",
-    name: "Analytics Dashboard",
-    slug: "analytics-dashboard",
-    owned: true,
-  },
-  {
-    id: "3",
-    name: "E-commerce Platform",
-    slug: "ecommerce-platform",
-    owned: false,
-  },
-];
 
 export function ProjectSidebar({
   isOpen,
-  onClose,
-  onNewProject,
+  onToggleSidebar,
+  ownedProjects,
+  sharedProjects,
   onRenameProject,
   onDeleteProject,
+  currentProjectId,
+  showBackdrop = true,
+  defaultTab = "my-projects",
 }: ProjectSidebarProps) {
   const [hoveredProjectId, setHoveredProjectId] = useState<string | null>(null);
 
-  const myProjects = MOCK_PROJECTS.filter((p) => p.owned);
-  const sharedProjects = MOCK_PROJECTS.filter((p) => !p.owned);
-
   const handleRename = (project: Project, e: React.MouseEvent) => {
     e.stopPropagation();
-    onRenameProject(project);
+    onRenameProject?.(project);
   };
 
   const handleDelete = (project: Project, e: React.MouseEvent) => {
     e.stopPropagation();
-    onDeleteProject(project);
+    onDeleteProject?.(project);
   };
 
   const ProjectItem = ({ project }: { project: Project }) => (
@@ -66,11 +50,13 @@ export function ProjectSidebar({
       onMouseEnter={() => setHoveredProjectId(project.id)}
       onMouseLeave={() => setHoveredProjectId(null)}
     >
-      <div className="flex items-center justify-between px-3 py-2 rounded-md hover:bg-slate-800 transition-colors group cursor-pointer">
+      <div className={`flex items-center justify-between rounded-md px-3 py-2 transition-colors group ${project.id === currentProjectId ? "bg-slate-800" : "hover:bg-slate-800"}`}>
+        <Link href={`/editor/${project.id}`} className="min-w-0 flex-1" onClick={() => onToggleSidebar(false)}>
         <span className="text-sm text-slate-300 truncate flex-1">{project.name}</span>
+        </Link>
 
         {/* Action Icons (shown on hover for owned projects) */}
-        {project.owned && hoveredProjectId === project.id && (
+        {project.owned && hoveredProjectId === project.id && onRenameProject && onDeleteProject && (
           <div className="flex items-center gap-1 ml-2">
             <Button
               variant="ghost"
@@ -99,10 +85,10 @@ export function ProjectSidebar({
   return (
     <>
       {/* Backdrop */}
-      {isOpen && (
+      {showBackdrop && isOpen && (
         <div
           className="fixed inset-0 bg-black/50 z-40 transition-opacity"
-          onClick={onClose}
+          onClick={() => onToggleSidebar(false)}
         />
       )}
 
@@ -118,7 +104,7 @@ export function ProjectSidebar({
           <Button
             variant="ghost"
             size="icon"
-            onClick={onClose}
+            onClick={() => onToggleSidebar(false)}
             className="h-8 w-8"
             aria-label="Close sidebar"
           >
@@ -128,7 +114,7 @@ export function ProjectSidebar({
 
         {/* Tabs */}
         <ScrollArea className="flex-1 px-4 py-4">
-          <Tabs defaultValue="my-projects" className="w-full">
+          <Tabs defaultValue={defaultTab} className="w-full">
             <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="my-projects">My projects</TabsTrigger>
               <TabsTrigger value="shared">Shared</TabsTrigger>
@@ -136,9 +122,9 @@ export function ProjectSidebar({
 
             {/* My Projects Tab */}
             <TabsContent value="my-projects" className="mt-4">
-              {myProjects.length > 0 ? (
+              {ownedProjects.length > 0 ? (
                 <div className="space-y-2">
-                  {myProjects.map((project) => (
+                  {ownedProjects.map((project) => (
                     <ProjectItem key={project.id} project={project} />
                   ))}
                 </div>
@@ -175,14 +161,6 @@ export function ProjectSidebar({
             </TabsContent>
           </Tabs>
         </ScrollArea>
-
-        {/* New Project Button */}
-        <div className="px-4 py-4 border-t border-slate-800">
-          <Button className="w-full" variant="default" onClick={onNewProject}>
-            <Plus className="h-4 w-4 mr-2" />
-            New Project
-          </Button>
-        </div>
       </aside>
     </>
   );
