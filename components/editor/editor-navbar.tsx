@@ -35,6 +35,10 @@ export function EditorNavbar({
             <PanelLeftOpen className="h-5 w-5" />
           </Button>
         )}
+        <Button variant="ghost" size="icon" onClick={() => window.location.href = "/"} className="h-8 w-8 shrink-0" aria-label="Go to home page">
+            Home
+        </Button>
+
         {projectName && (
           <span className="max-w-96 truncate text-xl font-semibold tracking-tight text-slate-100">
             {projectName}

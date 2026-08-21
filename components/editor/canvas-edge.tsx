@@ -8,6 +8,8 @@ import {
 import { useCanvasNodeEditing } from "@/components/editor/canvas-node-editing-context";
 import type { CanvasEdge } from "@/types/canvas";
 
+// edges are not visible in canvas let's update
+
 export function CanvasEdge({
   id,
   data,
@@ -50,7 +52,7 @@ export function CanvasEdge({
         markerEnd={markerEnd}
         interactionWidth={20}
         style={{
-          stroke: isActive ? "var(--accent-primary)" : "var(--text-faint)",
+          // stroke: isActive ? "var(--accent-primary)" : "var(--text-faint)",
           strokeLinecap: "round",
           strokeWidth: 1.5,
           transition: "stroke 150ms ease",
